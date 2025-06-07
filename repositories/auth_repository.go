@@ -1,0 +1,39 @@
+package repositories
+
+import (
+	"context"
+
+	"github.com/payslip/models"
+	"gorm.io/gorm"
+)
+
+type AuthRepository interface {
+	FindEmployeeByUsername(ctx context.Context, username string) (*models.Employee, error)
+	FindAdminByUsername(ctx context.Context, username string) (*models.Admin, error)
+}
+
+type authRepository struct {
+	DB *gorm.DB
+}
+
+func NewAuthRepository(db *gorm.DB) *authRepository {
+	return &authRepository{DB: db}
+}
+
+func (ar *authRepository) FindEmployeeByUsername(ctx context.Context, username string) (*models.Employee, error) {
+	var employee models.Employee
+	err := ar.DB.Where("username = ?", username).First(&employee).Error
+	if err != nil {
+		return nil, err
+	}
+	return &employee, nil
+}
+
+func (ar *authRepository) FindAdminByUsername(ctx context.Context, username string) (*models.Admin, error) {
+	var admin models.Admin
+	err := ar.DB.Where("username = ?", username).First(&admin).Error
+	if err != nil {
+		return nil, err
+	}
+	return &admin, nil
+}

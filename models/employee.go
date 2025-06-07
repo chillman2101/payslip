@@ -1,10 +1,23 @@
 package models
 
+import "gorm.io/gorm"
+
+type Employee struct {
+	gorm.Model
+	Username string `json:"username" gorm:"index"`
+	Password string `json:"password" ` // exclude from SQL generation
+	Salary   int64  `json:"salary"`    // exclude from SQL generation
+}
+
+func (Employee) TableName() string {
+	return "employees"
+}
+
 type UsernameDummy struct {
 	Username string `json:"username"`
 }
 
-var users = []UsernameDummy{
+var Users = []UsernameDummy{
 	{Username: "bmabe0"},
 	{Username: "bkarpinski1"},
 	{Username: "rabbotts2"},
