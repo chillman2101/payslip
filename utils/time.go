@@ -34,3 +34,15 @@ func ValidateOvertimeAmount(amountTime int64) error {
 	}
 	return nil
 }
+
+func CountWorkingDays(start, end time.Time) int {
+	workingDays := 0
+
+	for d := start; !d.After(end); d = d.AddDate(0, 0, 1) {
+		if d.Weekday() != time.Saturday && d.Weekday() != time.Sunday {
+			workingDays++
+		}
+	}
+
+	return workingDays
+}

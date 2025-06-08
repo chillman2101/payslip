@@ -13,6 +13,7 @@ func (s *Service) SubmitOvertime(ctx context.Context, req models.EmployeeSubmitO
 	overtime.EmployeeId = req.EmployeeId
 	overtime.OvertimeDate = time.Now().Format("2006-01-02")
 	overtime.TotalHour = req.AmountTime
+	overtime.PayrollId = req.PayrollId
 	exist_overtime, err := s.OvertimeRepo.FindOvertimeByEmployeeIdAndDate(ctx, &overtime)
 	if err != nil {
 		return nil, err

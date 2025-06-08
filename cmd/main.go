@@ -16,6 +16,7 @@ import (
 	"github.com/payslip/routes/auth"
 	"github.com/payslip/routes/employees/attendance"
 	"github.com/payslip/routes/employees/overtime"
+	"github.com/payslip/routes/employees/payslip"
 	"github.com/payslip/routes/employees/reimbursement"
 	"github.com/payslip/services"
 )
@@ -65,6 +66,7 @@ func main() {
 	attendance.RegisterRoutes(r, c, svc)
 	overtime.RegisterRoutes(r, c, svc)
 	reimbursement.RegisterRoutes(r, c, svc)
+	payslip.RegisterRoutes(r, c, svc)
 
 	r.Run(fmt.Sprintf(":%s", c.ServerPort))
 }

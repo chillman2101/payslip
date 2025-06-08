@@ -66,3 +66,42 @@ func ProcessPayroll(c *gin.Context, svc *services.Service) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Sucessfully Processed Payroll"})
 }
+
+func SummaryPayroll(c *gin.Context, svc *services.Service) {
+	requestID := c.GetString("request_id")
+	user := c.GetUint("user_id")
+	var payroll_id int
+	id, exist := c.Params.Get("id")
+	if !exist {
+		c.AbortWithError(http.StatusBadRequest, errors.New("id is required"))
+		return
+	}
+	payroll_id, _ = strconv.Atoi(id)
+
+	response, err := svc.GetSummaryPayrollEmployee(c.Request.Context(), payroll_id, int(user))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "request_id": requestID})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "successfully get summary", "data": &response})
+}
+
+func SummaryPayrollAdmin(c *gin.Context, svc *services.Service) {
+	requestID := c.GetString("request_id")
+	var payroll_id int
+	id, exist := c.Params.Get("id")
+	if !exist {
+		c.AbortWithError(http.StatusBadRequest, errors.New("id is required"))
+		return
+	}
+	payroll_id, _ = strconv.Atoi(id)
+
+	response, err := svc.GetSummaryPayrollAdmin(c.Request.Context(), payroll_id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "request_id": requestID})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "successfully get summary", "data": &response})
+}

@@ -24,8 +24,9 @@ func (s *Service) LoginAdmin(ctx context.Context, req models.UserRequest) (inter
 func (s *Service) LoginEmployee(ctx context.Context, req models.UserRequest) (interface{}, error) {
 	employee, err := s.AuthRepo.FindEmployeeByUsername(ctx, req.Username)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("employee not found")
 	}
+
 	match := utils.CheckPasswordHash(req.Password, employee.Password)
 	if !match {
 		return nil, errors.New("invalid password")

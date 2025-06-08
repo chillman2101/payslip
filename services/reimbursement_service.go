@@ -12,6 +12,8 @@ func (s *Service) SubmitReimbursement(ctx context.Context, req models.EmployeeSu
 	reimbursement.EmployeeId = req.EmployeeId
 	reimbursement.ReimbursementDate = time.Now().Format("2006-01-02")
 	reimbursement.TotalAmount = req.Amount
+	reimbursement.Description = req.Description
+	reimbursement.PayrollId = req.PayrollId
 
 	_, err := s.ReimbursementRepo.InsertReimbursement(ctx, &reimbursement)
 	if err != nil {

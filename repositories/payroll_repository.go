@@ -16,6 +16,8 @@ type PayrollRepository interface {
 	CreatePayroll(ctx context.Context, payroll *models.Payroll) error
 	ListPayrollUnprocessed(ctx context.Context) ([]models.Payroll, error)
 	ProcessPayroll(ctx context.Context, payroll_id int) error
+	GetSummaryPayrollByPayrollIdAndEmployeeId(ctx context.Context, payroll_id, employee_id int) (*models.Payroll, error)
+	GetSummaryPayrollByPayrollId(ctx context.Context, payroll_id int) (*models.Payroll, error)
 }
 
 type payrollRepository struct {
@@ -111,4 +113,44 @@ func (pr *payrollRepository) ProcessPayroll(ctx context.Context, payroll_id int)
 	}
 
 	return nil
+}
+
+func (pr *payrollRepository) GetSummaryPayrollByPayrollIdAndEmployeeId(ctx context.Context, payroll_id, employee_id int) (*models.Payroll, error) {
+	var payroll models.Payroll
+	query := pr.DB.Table("payrolls")
+	query = query.Where("id = ?", payroll_id)
+	query = query.Preload("Attendance", "employee_id = ?", employee_id)
+	query = query.Preload("Overtime", "employee_id = ?", employee_id)
+	query = query.Preload("Reimbursement", "employee_id = ?", employee_id)
+
+	err := query.First(&payroll).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil // Tidak ada konflik
+		}
+		log.Println("DB error:", err)
+		return nil, err
+	}
+
+	return &payroll, nil
+}
+
+func (pr *payrollRepository) GetSummaryPayrollByPayrollId(ctx context.Context, payroll_id int) (*models.Payroll, error) {
+	var payroll models.Payroll
+	query := pr.DB.Table("payrolls")
+	query = query.Where("id = ?", payroll_id)
+	query = query.Preload("Attendance")
+	query = query.Preload("Overtime")
+	query = query.Preload("Reimbursement")
+
+	err := query.First(&payroll).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil // Tidak ada konflik
+		}
+		log.Println("DB error:", err)
+		return nil, err
+	}
+
+	return &payroll, nil
 }

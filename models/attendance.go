@@ -12,4 +12,5 @@ type Attendance struct {
 	AttendanceDate string    `json:"attendance_date" gorm:"type:date;index"`
 	CheckInTime    time.Time `json:"check_in_time"`
 	CheckOutTime   time.Time `json:"check_out_time"`
+	PayrollId      uint      `json:"payroll_id" gorm:"index"`
 }

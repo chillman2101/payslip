@@ -28,11 +28,13 @@ type AuditRequest struct {
 type EmployeeAttendanceRequest struct {
 	RequestId  string `json:"request_id"`
 	EmployeeId uint   `json:"employee_id"`
+	PayrollId  uint   `json:"payroll_id"`
 }
 
 type EmployeeSubmitOvertimeRequest struct {
 	RequestId   string `json:"request_id"`
 	EmployeeId  uint   `json:"employee_id"`
+	PayrollId   uint   `json:"payroll_id"`
 	AmountTime  int64  `json:"amount_time" binding:"required"`
 	Description string `json:"description" binding:"required"`
 }
@@ -40,6 +42,7 @@ type EmployeeSubmitOvertimeRequest struct {
 type EmployeeSubmitReimbursementRequest struct {
 	RequestId   string `json:"request_id"`
 	EmployeeId  uint   `json:"employee_id"`
+	PayrollId   uint   `json:"payroll_id"`
 	Amount      int64  `json:"amount" binding:"required"`
 	Description string `json:"description" binding:"required"`
 }

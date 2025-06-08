@@ -46,10 +46,13 @@ func EmployeeLogin(c *gin.Context, svc *services.Service) {
 func CheckIn(c *gin.Context, svc *services.Service) {
 	requestID := c.GetString("request_id")
 	user := c.GetUint("user_id")
+	payrollID := c.GetUint("payroll_id")
+
 	var req models.EmployeeAttendanceRequest
 	req.RequestId = requestID
 	req.EmployeeId = user
-	now := time.Now().AddDate(0, 0, 1) // fake
+	req.PayrollId = payrollID
+	now := time.Now() // fake
 
 	// Reject if weekend
 	err := utils.ValidateOnlyWeekday(now)
@@ -70,9 +73,12 @@ func CheckIn(c *gin.Context, svc *services.Service) {
 func CheckOut(c *gin.Context, svc *services.Service) {
 	requestID := c.GetString("request_id")
 	user := c.GetUint("user_id")
+	payrollID := c.GetUint("payroll_id")
+
 	var req models.EmployeeAttendanceRequest
 	req.RequestId = requestID
 	req.EmployeeId = user
+	req.PayrollId = payrollID
 	now := time.Now().AddDate(0, 0, 1) // fake
 
 	// Reject if weekend
@@ -94,10 +100,12 @@ func CheckOut(c *gin.Context, svc *services.Service) {
 func SubmitOvertime(c *gin.Context, svc *services.Service) {
 	requestID := c.GetString("request_id")
 	user := c.GetUint("user_id")
+	payrollID := c.GetUint("payroll_id")
 
 	var req models.EmployeeSubmitOvertimeRequest
 	req.RequestId = requestID
 	req.EmployeeId = user
+	req.PayrollId = payrollID
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid request", "request_id": requestID})
 		return
@@ -133,10 +141,12 @@ func SubmitOvertime(c *gin.Context, svc *services.Service) {
 func SubmitReimbursement(c *gin.Context, svc *services.Service) {
 	requestID := c.GetString("request_id")
 	user := c.GetUint("user_id")
+	payrollID := c.GetUint("payroll_id")
 
 	var req models.EmployeeSubmitReimbursementRequest
 	req.RequestId = requestID
 	req.EmployeeId = user
+	req.PayrollId = payrollID
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid request", "request_id": requestID})
 		return

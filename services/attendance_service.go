@@ -11,8 +11,9 @@ import (
 func (s *Service) CheckIn(ctx context.Context, req models.EmployeeAttendanceRequest) (interface{}, error) {
 	var attendance models.Attendance
 	attendance.EmployeeId = req.EmployeeId
-	attendance.CheckInTime = time.Now()
+	attendance.CheckInTime = time.Now() // fake
 	attendance.AttendanceDate = time.Now().Format("2006-01-02")
+	attendance.PayrollId = req.PayrollId
 	exist_attendance, err := s.AttendanceRepo.FindAttendanceByEmployeeIdAndDate(ctx, &attendance)
 	if err != nil {
 		return nil, err
