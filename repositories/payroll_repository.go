@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"runtime/debug"
+	"time"
 
 	"github.com/payslip/models"
 	"gorm.io/gorm"
@@ -13,6 +14,8 @@ import (
 type PayrollRepository interface {
 	FindPayrollByDate(ctx context.Context, payroll *models.Payroll) (*models.Payroll, error)
 	CreatePayroll(ctx context.Context, payroll *models.Payroll) error
+	ListPayrollUnprocessed(ctx context.Context) ([]models.Payroll, error)
+	ProcessPayroll(ctx context.Context, payroll_id int) error
 }
 
 type payrollRepository struct {
@@ -51,6 +54,51 @@ func (pr *payrollRepository) CreatePayroll(ctx context.Context, payroll *models.
 	}()
 
 	err := tx.Create(payroll).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = tx.Commit().Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return nil
+}
+
+func (pr *payrollRepository) ListPayrollUnprocessed(ctx context.Context) ([]models.Payroll, error) {
+	var payrolls []models.Payroll
+	// Find payroll by date
+	query := pr.DB.Table("payrolls")
+	query = query.Where("already_proceed is false")
+	err := query.Find(&payrolls).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil // Tidak ada konflik
+		}
+		log.Println("DB error:", err)
+		return nil, err
+	}
+
+	return payrolls, nil
+}
+
+func (pr *payrollRepository) ProcessPayroll(ctx context.Context, payroll_id int) error {
+	tx := pr.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			log.Printf("Maaf gagal proses CreatePayroll: %v\n%s", r, debug.Stack())
+		}
+	}()
+	update := map[string]interface{}{
+		"already_proceed": true,
+		"updated_at":      time.Now(),
+		"pay_date":        time.Now(),
+	}
+	err := tx.Model(&models.Payroll{}).Where("id = ?", payroll_id).Updates(update).Error
 	if err != nil {
 		tx.Rollback()
 		return err

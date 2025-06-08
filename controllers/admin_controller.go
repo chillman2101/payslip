@@ -39,20 +39,3 @@ func AdminLogin(c *gin.Context, svc *services.Service) {
 	}
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
-
-func AddPayroll(c *gin.Context, svc *services.Service) {
-	requestID := c.GetString("request_id")
-	var req models.AddPayrollRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid request :" + err.Error(), "request_id": requestID})
-		return
-	}
-
-	_, err := svc.AddPayroll(c.Request.Context(), req)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "request_id": requestID})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "Sucessfully Create Payroll"})
-}

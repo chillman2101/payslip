@@ -40,3 +40,21 @@ func (s *Service) AddPayroll(ctx context.Context, req models.AddPayrollRequest) 
 
 	return nil, nil
 }
+
+func (s *Service) ListUnprocessedPayroll(ctx context.Context) (interface{}, error) {
+	payrolls, err := s.PayrollRepo.ListPayrollUnprocessed(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return payrolls, nil
+}
+
+func (s *Service) ProcessPayroll(ctx context.Context, payroll_id int) (interface{}, error) {
+	err := s.PayrollRepo.ProcessPayroll(ctx, payroll_id)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}

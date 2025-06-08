@@ -12,9 +12,11 @@ import (
 	"github.com/payslip/config/redis"
 	"github.com/payslip/middlewares"
 	"github.com/payslip/repositories"
-	"github.com/payslip/routes/attendance"
+	"github.com/payslip/routes/admin"
 	"github.com/payslip/routes/auth"
-	"github.com/payslip/routes/payroll"
+	"github.com/payslip/routes/employees/attendance"
+	"github.com/payslip/routes/employees/overtime"
+	"github.com/payslip/routes/employees/reimbursement"
 	"github.com/payslip/services"
 )
 
@@ -50,14 +52,19 @@ func main() {
 	//repositories
 	authRepo := repositories.NewAuthRepository(database)
 	payrollRepo := repositories.NewPayrollRepository(database)
+	attendanceRepo := repositories.NewAttendanceRepository(database)
+	overtimeRepo := repositories.NewOvertimeRepository(database)
+	reimbursementRepo := repositories.NewReimbursementRepository(database)
 
-	svc := services.NewService(database, cache_redis, authRepo, payrollRepo)
+	svc := services.NewService(database, cache_redis, authRepo, payrollRepo, attendanceRepo, overtimeRepo, reimbursementRepo)
 
 	// setup routes
 	r.Use(middlewares.RequestIDMiddleware())
 	auth.RegisterRoutes(r, c, svc)
-	payroll.RegisterRoutes(r, c, svc)
+	admin.RegisterRoutes(r, c, svc)
 	attendance.RegisterRoutes(r, c, svc)
+	overtime.RegisterRoutes(r, c, svc)
+	reimbursement.RegisterRoutes(r, c, svc)
 
 	r.Run(fmt.Sprintf(":%s", c.ServerPort))
 }

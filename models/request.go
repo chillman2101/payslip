@@ -25,6 +25,21 @@ type AuditRequest struct {
 	ClientIp   string        `json:"client_ip" binding:"required"`
 }
 
-type EmployeeCheckinRequest struct {
-	RequestId string `json:"request_id"`
+type EmployeeAttendanceRequest struct {
+	RequestId  string `json:"request_id"`
+	EmployeeId uint   `json:"employee_id"`
+}
+
+type EmployeeSubmitOvertimeRequest struct {
+	RequestId   string `json:"request_id"`
+	EmployeeId  uint   `json:"employee_id"`
+	AmountTime  int64  `json:"amount_time" binding:"required"`
+	Description string `json:"description" binding:"required"`
+}
+
+type EmployeeSubmitReimbursementRequest struct {
+	RequestId   string `json:"request_id"`
+	EmployeeId  uint   `json:"employee_id"`
+	Amount      int64  `json:"amount" binding:"required"`
+	Description string `json:"description" binding:"required"`
 }

@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"errors"
 	"log"
 	"runtime/debug"
 
@@ -23,10 +24,17 @@ func NewAttendanceRepository(db *gorm.DB) *attendanceRepository {
 	return &attendanceRepository{DB: db}
 }
 
-func (ar *attendanceRepository) FindAttendanceByDate(ctx context.Context, attendance *models.Attendance) (*models.Attendance, error) {
+func (ar *attendanceRepository) FindAttendanceByEmployeeIdAndDate(ctx context.Context, attendance *models.Attendance) (*models.Attendance, error) {
 	// Find attendance by date
 	var exist_attendance models.Attendance
-	ar.DB.Table("attendances").Where("attendance_date::date = ?", attendance.AttendanceDate).First(&exist_attendance)
+	err := ar.DB.Table("attendances").Where("employee_id = ?", attendance.EmployeeId).Where("attendance_date::date = ?", attendance.AttendanceDate).First(&exist_attendance).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil // Tidak ada konflik
+		}
+		log.Println("DB error:", err)
+		return nil, err
+	}
 
 	return &exist_attendance, nil
 }

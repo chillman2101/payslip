@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +33,6 @@ func AuthMiddleware(role string) gin.HandlerFunc {
 
 		claims := token.Claims.(jwt.MapClaims)
 		if claims["role"] != role {
-			fmt.Println("role", claims["role"], role)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized role"})
 			return
 		}

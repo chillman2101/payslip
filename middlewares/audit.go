@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"time"
@@ -25,7 +24,6 @@ func AuditMiddleware(s *services.Service) gin.HandlerFunc {
 		}
 
 		c.Next()
-		fmt.Println("c ==", c)
 		user := c.GetUint("user_id")
 		request_id := c.GetString("request_id")
 		endpoint := c.Request.URL.Path

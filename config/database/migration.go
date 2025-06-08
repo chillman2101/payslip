@@ -10,4 +10,7 @@ func Migration(db *gorm.DB) {
 	db.AutoMigrate(&models.Admin{})
 	db.AutoMigrate(&models.Payroll{})
 	db.AutoMigrate(&models.AuditLog{})
+	db.AutoMigrate(&models.Attendance{})
+	db.AutoMigrate(&models.Overtime{})
+	db.AutoMigrate(&models.Reimbursement{})
 }
