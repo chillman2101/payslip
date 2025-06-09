@@ -138,7 +138,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 ### Add Attendance (Check-In)
 
 #### POST `/employee/attendance/check-in`
-- **Description**: Add Payroll Admin.
+- **Description**:  Add Attendance Checkin.
 - **Headers**:
   - `Authorization: Bearer <employee-token>`
 - **Response**:
@@ -153,7 +153,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 ### Add Attendance (Check-Out)
 
 #### POST `/employee/attendance/check-out`
-- **Description**: Add Payroll Admin.
+- **Description**: Add Attendance Checkout.
 - **Headers**:
   - `Authorization: Bearer <employee-token>`
 - **Response**:
@@ -168,7 +168,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 ### Submit Overtime
 
 #### POST `/employee/overtime/submit`
-- **Description**: Add Payroll Admin.
+- **Description**: Submit Overtime.
 - **Headers**:
   - `Authorization: Bearer <employee-token>`
 - **Request**:
@@ -185,23 +185,27 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 }
 ```
 
-#### POST `/api/login/employee`
-- **Description**: Login as employee.
+---
+
+### Submit Reimbursement
+
+#### POST `/employee/reimbursement/submit`
+- **Description**: Submit Reimbursement.
+- **Headers**:
+  - `Authorization: Bearer <employee-token>`
 - **Request**:
 ```json
 {
-  "username": "bmabe0",
-  "password": "bmabe0"
+    "amount": 1200000,
+    "description": "Kacamata"
 }
 ```
 - **Response**:
 ```json
 {
-  "token": "<jwt-token>",  
+    "message": "successfully submit reimbursement"
 }
 ```
-
----
 
 
 ### Payslip Employee Summary
@@ -209,7 +213,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 #### GET `/employee/payslip/generate/:id`
 - id:Payroll ID
 - **Headers**:
-  - `Authorization: Bearer <token>`
+  - `Authorization: Bearer <employee-token>`
 - **Response**:
 ```json
 {
@@ -357,7 +361,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 #### GET `/admin/payslip/generate/:id`
 - id:Payroll ID
 - **Headers**:
-  - `Authorization: Bearer <token>`
+  - `Authorization: Bearer <admin-token>`
 - **Response**:
 ```json
 {
