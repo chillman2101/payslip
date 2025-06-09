@@ -44,7 +44,7 @@ func (ar *attendanceRepository) CheckInAttendance(ctx context.Context, attendanc
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
-			log.Printf("Maaf gagal proses CreatePayroll: %v\n%s", r, debug.Stack())
+			log.Printf("Maaf gagal proses CheckInAttendance: %v\n%s", r, debug.Stack())
 		}
 	}()
 

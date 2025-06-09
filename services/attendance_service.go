@@ -18,7 +18,6 @@ func (s *Service) CheckIn(ctx context.Context, req models.EmployeeAttendanceRequ
 	if err != nil {
 		return nil, err
 	}
-
 	if exist_attendance != nil {
 		return nil, errors.New("employee has already checked in")
 	}

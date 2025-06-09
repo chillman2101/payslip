@@ -16,9 +16,7 @@ import (
 )
 
 func TestLoginAdmin_Integration(t *testing.T) {
-	dsn := "host=localhost user=postgres password=postgres dbname=db_payslip port=5432 sslmode=disable TimeZone=Asia/Jakarta"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	assert.NoError(t, err)
+	db := setupTestDB(t)
 
 	tx := db.Begin()
 	defer tx.Rollback()
@@ -29,7 +27,7 @@ func TestLoginAdmin_Integration(t *testing.T) {
 		Password: string(hashedPwd),
 		Model:    gorm.Model{CreatedAt: time.Now()},
 	}
-	err = tx.Create(admin).Error
+	err := tx.Create(admin).Error
 	assert.NoError(t, err)
 
 	authRepo := repositories.NewAuthRepository(tx)
