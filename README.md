@@ -115,8 +115,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 ### Payslip Employee Summary
 
 #### GET `/employee/payslip/generate/:id`
-- id:
- - **Description**: Payroll ID.
+- id:Payroll ID
 - **Headers**:
   - `Authorization: Bearer <token>`
 - **Response**:
@@ -264,8 +263,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 ### Payslip Admin Summary
 
 #### GET `/admin/payslip/generate/:id`
-- id:
- - **Description**: Payroll ID.
+- id:Payroll ID
 - **Headers**:
   - `Authorization: Bearer <token>`
 - **Response**:
