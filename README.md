@@ -112,6 +112,98 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 
 ---
 
+### Add Payroll
+
+#### POST `/admin/payroll/add`
+- **Description**: Add Payroll Admin.
+- - **Headers**:
+  - `Authorization: Bearer <admin-token>`
+- **Request**:
+```json
+{
+    "description": "Payroll Bulan Mei",
+    "start_date": "2025-06-01",
+    "end_date": "2025-06-30"
+}
+```
+- **Response**:
+```json
+{
+    "message": "Sucessfully Create Payroll"
+}
+```
+
+---
+
+### Add Attendance (Check-In)
+
+#### POST `/employee/attendance/check-in`
+- **Description**: Add Payroll Admin.
+- **Headers**:
+  - `Authorization: Bearer <employee-token>`
+- **Response**:
+```json
+{
+    "message": "successfully check in"
+}
+```
+
+---
+
+### Add Attendance (Check-Out)
+
+#### POST `/employee/attendance/check-out`
+- **Description**: Add Payroll Admin.
+- **Headers**:
+  - `Authorization: Bearer <employee-token>`
+- **Response**:
+```json
+{
+    "message": "successfully check out"
+}
+```
+
+---
+
+### Submit Overtime
+
+#### POST `/employee/overtime/submit`
+- **Description**: Add Payroll Admin.
+- **Headers**:
+  - `Authorization: Bearer <employee-token>`
+- **Request**:
+```json
+{
+    "amount_time": 2,
+    "description": "test overtime"
+}
+```
+- **Response**:
+```json
+{
+    "message": "successfully submit overtime"
+}
+```
+
+#### POST `/api/login/employee`
+- **Description**: Login as employee.
+- **Request**:
+```json
+{
+  "username": "bmabe0",
+  "password": "bmabe0"
+}
+```
+- **Response**:
+```json
+{
+  "token": "<jwt-token>",  
+}
+```
+
+---
+
+
 ### Payslip Employee Summary
 
 #### GET `/employee/payslip/generate/:id`
