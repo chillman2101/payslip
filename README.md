@@ -19,11 +19,10 @@
 
 2. **Set up `.env`**:
    ```env
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=postgres
-   DB_PASSWORD=postgres
-   DB_NAME=payslip_system
+    DB=postgresql://postgres:postgres@localhost:5432/db_payslip
+    SERVER_PORT=8081
+    REDIS_URL=redis://default@127.0.0.1:6379
+    AUTH_KEY=asdasdasdasd
    ```
 
 3. **Run migrations**:
@@ -53,8 +52,8 @@
 
 ---
 
-### 3. How to Create an Admin
-Uncomment the "Seeder(db)" to perform Seeder 100 employee and 2 admin accounts
+### 3. How to Create an Admin & Employee
+Uncomment the "Seeder(db)" code to perform Seeder 100 employee and 2 admin accounts
 ```go
 func NewDatabase(config *config.Config) (*gorm.DB, error) {
 	dsn := config.DB
@@ -115,7 +114,9 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 
 ### Payslip Employee Summary
 
-#### GET `/employee/payslip/generate/1`
+#### GET `/employee/payslip/generate/:id`
+- id:
+ - **Description**: Payroll ID.
 - **Headers**:
   - `Authorization: Bearer <token>`
 - **Response**:
@@ -262,7 +263,9 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 
 ### Payslip Admin Summary
 
-#### GET `/admin/payslip/generate/1`
+#### GET `/admin/payslip/generate/:id`
+- id:
+ - **Description**: Payroll ID.
 - **Headers**:
   - `Authorization: Bearer <token>`
 - **Response**:
@@ -333,3 +336,5 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 - Middleware for:
   - Request tracing
   - Performance logging
+  - Checking Active Payroll
+  - Checking Auth
