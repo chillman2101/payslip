@@ -78,7 +78,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 
 ### Auth
 
-#### POST `/api/login/admin`
+#### POST `/auth/admin/login`
 - **Description**: Login as admin.
 - **Request**:
 ```json
@@ -94,7 +94,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 }
 ```
 
-#### POST `/api/login/employee`
+#### POST `/auth/employee/login`
 - **Description**: Login as employee.
 - **Request**:
 ```json
@@ -378,6 +378,8 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
     "message": "successfully get summary"
 }
 ```
+
+For more endpoint you can visit [this link](https://martian-spaceship-346940.postman.co/workspace/Team-Workspace~74f17f18-4ce5-4085-8c63-0cd99f66b41d/collection/29907315-48d4851d-6098-4e64-bbc5-741b15a2a4b2?action=share&creator=29907315)
 
 ---
 
