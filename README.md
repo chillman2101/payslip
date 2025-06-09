@@ -379,7 +379,7 @@ func NewDatabase(config *config.Config) (*gorm.DB, error) {
 }
 ```
 
-For more endpoint you can visit [this link](https://martian-spaceship-346940.postman.co/workspace/Team-Workspace~74f17f18-4ce5-4085-8c63-0cd99f66b41d/collection/29907315-48d4851d-6098-4e64-bbc5-741b15a2a4b2?action=share&creator=29907315)
+For more endpoint you can visit [this link](https://documenter.getpostman.com/view/29907315/2sB2x3ntQ8)
 
 ---
 
